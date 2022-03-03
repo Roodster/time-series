@@ -11,13 +11,13 @@
 
 ######################################################################
 
-
+path = 'datasets/airline-passengers.csv'
 #**********************************************************************
 #Slide-28: Seasonal-Trend Decomposition
 #**********************************************************************
 from pandas import read_csv
 from statsmodels.tsa.seasonal import seasonal_decompose
-df  = read_csv('airline-passengers.csv',  header=0)
+df  = read_csv(path,  header=0)
 df.Month = pd.to_datetime(df.Month)
 df = df.set_index('Month')
 result = seasonal_decompose(df, model='multiplicative')
@@ -28,7 +28,7 @@ result.plot()
 #**********************************************************************
 from pandas import read_csv
 from statsmodels.tsa.stattools import adfuller
-df  = read_csv('airline-passengers.csv', header=0, index_col=0)
+df  = read_csv(path, header=0, index_col=0)
 result = adfuller(df.values)
 print('p-value: %f' % result[1])
 
@@ -40,7 +40,7 @@ from numpy import log
 from numpy import sqrt
 from scipy.stats import boxcox
 import matplotlib.pyplot as plt
-series = read_csv('airline-passengers.csv', header=0, parse_dates=[0], index_col=0, squeeze=True)
+series = read_csv(path, header=0, parse_dates=[0], index_col=0, squeeze=True)
 series_log = log(series)
 series_sqr = sqrt(series)
 series_boxcox, lam= boxcox(series)
@@ -55,7 +55,7 @@ plt.show()
 #**********************************************************************
 from pandas import datetime
 from matplotlib import pyplot
-series = read_csv('airline-passengers.csv', header=0, parse_dates=[0], index_col=0, squeeze=True)
+series = read_csv(path, header=0, parse_dates=[0], index_col=0, squeeze=True)
 diff = series.diff()
 pyplot.plot(series.values)
 pyplot.plot(diff.values)
@@ -67,7 +67,7 @@ from pandas import read_csv
 from pandas import Series
 import pandas as pd
 from scipy.stats import boxcox
-series = read_csv('airline-passengers.csv', header=0, parse_dates=[0], index_col=0, squeeze=True)
+series = read_csv(path, header=0, parse_dates=[0], index_col=0, squeeze=True)
 series_boxcox, lam= boxcox(series)
 series_boxcox=pd.DataFrame(series_boxcox)
 series_boxcox_diff = series_boxcox.diff()
@@ -86,7 +86,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
-df = pd.read_csv('airline-passengers.csv', parse_dates=['Month'],index_col='Month')
+df = pd.read_csv(path, parse_dates=['Month'],index_col='Month')
 df.index.freq = 'MS'
 ts=df.iloc[:, 0]
 es1 = SimpleExpSmoothing(ts).fit(smoothing_level=0.2)
@@ -165,7 +165,7 @@ from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 from pmdarima import auto_arima
 import pandas as pd
-df = read_csv('airline-passengers.csv', header=0, parse_dates=[0], index_col=0)
+df = read_csv(path, header=0, parse_dates=[0], index_col=0)
 train, test = df[1:len(df)-7], df[len(df)-7:]
 # SARIMA with automatic hyperparameter setting
 model = auto_arima(train, start_p=1, start_q=1, max_p=3, max_q=3, m=12,
@@ -384,10 +384,11 @@ plt.show()
 #Slide-158: Fourier Transform 
 #**********************************************************************
 
+
 import numpy as np
 import matplotlib.pyplot as plotter
 samplingFrequency=100
-time = np.arange(0, 1, 1/samplingFrequency);
+time = np.arange(0, 1, 1/samplingFrequency)
 sine1 = np.sin(2*np.pi*2*time)
 sine2 = np.sin(2*np.pi*7*time)
 ts = sine1 + sine2
@@ -408,7 +409,6 @@ plt.plot(frequencies, abs(fourierTransform))
 plt.xlabel('Frequency')
 plt.ylabel('Amplitude')
 plt.show()
-
 #**********************************************************************
 #Slide-163: Wavelets
 #**********************************************************************
@@ -416,7 +416,7 @@ plt.show()
 import numpy as np
 import pywt
 import matplotlib.pyplot as plt
-df= read_csv('airline-passengers.csv', header=0, index_col=0)
+df= read_csv(path, header=0, index_col=0)
 x=df.iloc[:,0]
 ts = x.values
 thresh = 0.30*np.nanmax(ts)
@@ -435,7 +435,7 @@ import numpy
 import matplotlib.pyplot as plt
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 from tslearn.piecewise import PiecewiseAggregateApproximation
-df= read_csv('airline-passengers.csv', header=0, index_col=0)
+df= read_csv(path, header=0, index_col=0)
 df_Series=df.iloc[:,0]
 dataset = df_Series.values
 dataset=dataset.reshape(1, 144)
@@ -455,7 +455,7 @@ import numpy
 import matplotlib.pyplot as plt
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance
 from tslearn.piecewise import SymbolicAggregateApproximation
-df= read_csv('airline-passengers.csv', header=0, index_col=0)
+df= read_csv(path, header=0, index_col=0)
 df_Series=df.iloc[:,0]
 dataset = df_Series.values
 dataset=dataset.reshape(1, 144)
@@ -475,7 +475,7 @@ plt.show()
 
 import pandas as pd
 import numpy as np
-df  = read_csv('airline-passengers.csv', header=0, index_col=0)
+df  = read_csv(path, header=0, index_col=0)
 x=df.iloc[:,0]
 x=x.astype('float64')
 xt=x[4]
@@ -490,7 +490,7 @@ print ([xt, y[4]])
 
 from pandas import read_csv
 from sklearn.preprocessing import MinMaxScaler
-df= read_csv('airline-passengers.csv', header=0, index_col=0)
+df= read_csv(path, header=0, index_col=0)
 ts=df.iloc[:10, :]
 values = ts.values
 values = values.reshape((len(values), 1))
@@ -510,7 +510,7 @@ print (inversed)
 from pandas import read_csv
 from sklearn.preprocessing import StandardScaler
 from math import sqrt
-df= read_csv('airline-passengers.csv', header=0, index_col=0)
+df= read_csv(path, header=0, index_col=0)
 ts=df.iloc[:10, :]
 values = ts.values
 values = values.reshape((len(values), 1))
@@ -528,7 +528,7 @@ print (inversed)
 
 
 from pandas import read_csv
-df = read_csv('airline-passengers.csv', header=0, parse_dates=[0], index_col=0, squeeze=True)
+df = read_csv(path, header=0, parse_dates=[0], index_col=0, squeeze=True)
 df.resample('D').interpolate() #Upsampling
 df.resample('Y').mean() #Downsampling
 
